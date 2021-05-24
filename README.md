@@ -1,0 +1,2 @@
+# TabelaVerdade
+Created with CodeSandbox
