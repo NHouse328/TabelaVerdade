@@ -2,12 +2,19 @@ import React from "react";
 import { StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 
 export default (props) => {
-  const { content } = props;
+  const { content, s } = props;
+
+  let color = null;
+  if (s) {
+    if (content === 1) color = "#008000";
+    if (content === 0) color = "#FF0000";
+  }
 
   return (
+    //<TouchableWithoutFeedback onPress={onOpen}>
     <TouchableWithoutFeedback>
       <View style={[styles.field, styles.regular]}>
-        <Text style={styles.label}>{content}</Text>
+        <Text style={[styles.label, { color }]}>{content}</Text>
       </View>
     </TouchableWithoutFeedback>
   );

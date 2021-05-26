@@ -1,68 +1,59 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import BitTable from "./BitTable";
 import "./styles.css";
+import TruthTable from "./TruthTable";
+
+const varis = 3;
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = this.createState();
+  }
+
+  createState = () => {
+    return {
+      board: table(Math.pow(2, varis), 1, 1)
+    };
+  };
+
+  onOpenField = (row, column) => {
+    const board = cloneBoard(this.state.board);
+
+    //board[row][column] = 0;
+
+    this.setState({ board });
+    console.log("foi");
+  };
+
   render() {
-    const matriz = truthTable(4, 16);
-
-    const newMatriz = rotateTable(matriz);
-
     return (
       <View>
-        <BitTable matriz={newMatriz} />
+        <TruthTable
+          n={varis}
+          onOpenField={this.onOpenField}
+          table={this.state.board}
+        />
       </View>
     );
   }
 }
 
-const truthTable = (r, c) => {
-  //Linhas
-  var tabela = new Array(r);
-
-  //Varia Linhas
-  for (var i = 0; i < r; i++) {
-    //Colunas
-    tabela[i] = new Array(c);
-    var ind = 0;
-    var turn = true;
-    var cont = Math.pow(2, i);
-    //Varia Coluna
-    for (var j = 0; j < c; j++) {
-      if (ind <= cont - 1 && turn) {
-        ind++;
-        tabela[i][j] = 0;
-      } else {
-        turn = false;
-        ind--;
-        tabela[i][j] = 1;
-      }
-      if (ind === 0) {
-        turn = true;
-      }
+const table = (rows, cols, content) => {
+  const matriz = [];
+  for (var i = 0; i < rows; i++) {
+    matriz[i] = [];
+    for (var j = 0; j < cols; j++) {
+      matriz[i][j] = content;
     }
   }
-  //console.table(tabela);
-  return tabela;
+  return matriz;
 };
 
-const rotateTable = (matriz) => {
-  var newCols = matriz.length;
-  var newRows = matriz[0].length;
-
-  var newMatriz = new Array(newRows);
-
-  for (var i = 0; i < newRows; i++) {
-    //Colunas
-    newMatriz[i] = new Array(newCols);
-    //Varia Coluna
-    for (var j = 0; j < newCols; j++) {
-      newMatriz[i][j] = matriz[newCols - 1 - j][i];
-    }
-  }
-
-  //console.table(newMatriz);
-  //console.log(newRows);
-  return newMatriz;
+const cloneBoard = (board) => {
+  return board.map((rows) => {
+    return rows.map((field) => {
+      return { ...field };
+    });
+  });
 };
